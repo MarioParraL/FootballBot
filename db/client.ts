@@ -8,7 +8,7 @@ if (!url) {
 }
 
 const client = new MongoClient(url);
-await client.connect();
+//await client.connect();
 
 const db = client.db("ArticulosDB");
 const ArticulosCollection = db.collection<ArticleDB>("articulos");
