@@ -4,22 +4,18 @@ import "jsr:@std/dotenv/load";
 
 export const handler: Handlers = {
   async GET(req) {
-    // 1. Seguridad: Comprobamos si traen la llave secreta
     const url = new URL(req.url);
-    const secret = url.searchParams.get("secret");
-    const mySecret = Deno.env.get("CRON_SECRET");
+    const key = url.searchParams.get("key");
+    const mySecret = Deno.env.get("CRON_KEY");
 
-    // Si no traen clave, o la clave es incorrecta -> ¡FUERA!
-    if (!secret || secret !== mySecret) {
+    if (!key || key !== mySecret) {
       return new Response(JSON.stringify({ error: "No autorizado" }), {
         status: 401,
         headers: { "Content-Type": "application/json" },
       });
     }
-
-    // 2. Si la clave es correcta -> EJECUTAMOS EL BOT
     try {
-      console.log("⏰ Cron activado desde la web via API...");
+      console.log("Cron activado");
       await runBotUpdate();
 
       return new Response(
@@ -34,11 +30,16 @@ export const handler: Handlers = {
       );
     } catch (_e) {
       return new Response(
-        JSON.stringify({ status: "error", message: "error" }),
+        JSON.stringify({ status: "error", message: "error en el cron" }),
         {
           status: 500,
           headers: { "Content-Type": "application/json" },
         },
+      );
+    }
+  },
+};
+
       );
     }
   },
