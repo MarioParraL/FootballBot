@@ -29,7 +29,7 @@ export async function getLaLigaNews(): Promise<Article[]> {
     }
 
     return data.articles.filter((art: any) =>
-      art.title && art.url && art.urlToImage && art.description
+      art.title && art.url && art.description
     );
   } catch (error) {
     console.error("Error buscando noticias:", error);
